@@ -369,9 +369,11 @@
   "Return a `relative-datetime` clause with `n` units added to it."
   [absolute-or-relative-datetime :- mbql.s/DateTimeValue
    n                             :- s/Num]
-  (if (is-clause? :relative-datetime absolute-or-relative-datetime)
-    (let [[_ original-n unit] absolute-or-relative-datetime]
-      [:relative-datetime (+ n original-n) unit])
+  (if (or
+        (is-clause? :relative-datetime absolute-or-relative-datetime)
+        (is-clause? :relative-datetime-padded absolute-or-relative-datetime))
+    (let [[clause original-n unit] absolute-or-relative-datetime]
+      [clause (+ n original-n) unit])
     (let [[_ timestamp unit] absolute-or-relative-datetime]
       [:absolute-datetime (relative-date unit n timestamp) unit])))
 

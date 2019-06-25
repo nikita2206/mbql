@@ -111,10 +111,10 @@
 
      [:relative-datetime :current]
      [:relative-datetime -10 :day] ; amount & unit"
-  ([_ _]
-   [:relative-datetime :current])
-  ([_ amount unit]
-   [:relative-datetime amount (mbql.u/normalize-token unit)]))
+  ([clause _]
+   [clause :current])
+  ([clause amount unit]
+   [clause amount (mbql.u/normalize-token unit)]))
 
 (def ^:private mbql-clause->special-token-normalization-fn
   "Special fns to handle token normalization for different MBQL clauses."
@@ -123,7 +123,8 @@
    :datetime-field    normalize-datetime-field-tokens
    :binning-strategy  normalize-binning-strategy-tokens
    :time-interval     normalize-time-interval-tokens
-   :relative-datetime normalize-relative-datetime-tokens})
+   :relative-datetime normalize-relative-datetime-tokens
+   :relative-datetime-padded normalize-relative-datetime-tokens})
 
 (defn- normalize-mbql-clause-tokens
   "MBQL clauses by default get just the clause name normalized (e.g. `[\"COUNT\" ...]` becomes `[:count ...]`) and the
